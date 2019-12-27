@@ -20,3 +20,11 @@ c помощью команды: ssh -t -A -l ruakbdg 35.206.141.191 ssh 10.132.
 
 bastion_IP = 35.206.141.191
 someinternalhost_IP = 10.132.0.3
+
+Задание 4.
+
+testapp_IP = 35.241.133.52
+testapp_port = 9292
+
+Чтобы запустить скрипт удаленно использовать команду
+ssh 35.241.133.52 'bash -s' < install_ruby.sh
