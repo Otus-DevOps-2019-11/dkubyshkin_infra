@@ -38,7 +38,77 @@ ssh 35.241.133.52 'bash -s' < install_ruby.sh
 
 
 Задание 6
+1. Определили секцию Provider в файле main.tf. Это позволяет управлять ресурсами GCP через API вызовы.
+Пример:
+
+terraform {
+  # Версия terraform
+  required_version = "0.12.19"
+}
+
+provider "google" {
+  # Версия провайдера
+  version = "3.4"
+
+  # ID проекта
+  project = var.project
+
+  region = var.region
+}
+
+Чтобы добавить SSH ключи в метаданные инстанса можно использовать следующий пример:
+metadata = {
+# путь до публичного ключа
+ssh-keys = "appuser:${file("~/.ssh/appuser.pub")}"
+
+здесь используется встроенная функция file, она позволяет считывать содержимое файла и вставлять его в конфигурационный файл.
+
+Outputs vars 
+С помощью данных переменных мы можем вынести интересующую информацию (внешний адрем VM) в выходную переменную. 
+Пример: 
+output "app_external_ip" {
+  value = google_compute_instance.app.network_interface[0].access_config[0].nat_ip
+}
+Чтобы выходная переменная приняла значение нужно выполнить команду terraform refresh.
+
+Значение выходных переменным можно посмотреть, используя
+команду terraform output:
+Outputs:
+app_external_ip = 104.155.68.69
+$ terraform output
+app_external_ip = 104.155.68.69
+$ terraform output app_external_ip
+104.155.68.69
+
+Пример создание фаервола
+resource "google_compute_firewall" "firewall_puma" {
+name = "allow-puma-default"
+# Название сети, в которой действует правило
+network = "default"
+# Какой доступ разрешить
+allow {
+protocol = "tcp"
+ports = ["9292"]
+}
+# Каким адресам разрешаем доступ
+source_ranges = ["0.0.0.0/0"]
+# Правило применимо для инстансов с перечисленными тэгами
+target_tags = ["reddit-app"]
+}
+
+Provisioners\в terraform вызываются в момент создания/
+удаления ресурса и позволяют выполнять команды на удаленной
+или локальной машине. Их используют для запуска инструментов
+управления конфигурацией или начальной настройки системы.
+Пример провижинера:
+provisioner "file" {
+source = "files/puma.service"
+destination = "/tmp/puma.service"
+}
+В данном случаем провижинер копирует локальный определенный файл по указанному пути.
+
 
 1.Настроены конфигурационные файлы. Командой "terraform apply" создаётся instance с приложением
 2.Добавлены 2 пользователя в метаданные проекта.
+
 
