@@ -10,5 +10,9 @@ variable zone {
 
 variable app_disk_image {
   description = "Disk image for reddit app"
-  default     = "app-1579632676"
+  default     = "app-1580243107"
+}
+
+variable source_ranges {
+  default = ["0.0.0.0/0"]
 }

@@ -36,3 +36,15 @@ resource "google_compute_instance" "app" {
 resource "google_compute_address" "app_ip" {
   name = "reddit-app-ip"
 }
+
+
+resource "google_compute_firewall" "firewall_app" {
+  name = "allow-app-default"
+  network = "default"
+  allow {
+    protocol = "tcp"
+    ports = ["9292"]
+  }
+  source_ranges = var.source_ranges
+  target_tags   = ["reddit-app"]
+}

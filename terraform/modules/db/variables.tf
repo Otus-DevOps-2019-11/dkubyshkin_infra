@@ -1,6 +1,6 @@
 variable db_disk_image {
   description = "Disk image for reddit db"
-  default = "app-1579632897"
+  default = "app-1580244092"
 }
 
 variable zone {
