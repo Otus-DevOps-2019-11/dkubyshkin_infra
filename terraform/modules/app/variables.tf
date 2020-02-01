@@ -8,6 +8,7 @@ variable zone {
   default     = "europe-west1-b"
 }
 
+
 variable app_disk_image {
   description = "Disk image for reddit app"
   default     = "app-1580243107"
