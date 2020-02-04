@@ -1,9 +1,3 @@
----
-- name: Install MongoDB 4.0
-  hosts: all
-  become: true
-  tasks:
-  # Добавим ключ репозитория для последующей работы с ним
   - name: Add APT key
     apt_key:
       id: E52529D4
@@ -14,16 +8,19 @@
     apt_repository:
       repo: deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse
       state: present
+    tags: install
 
   # Выполним установку пакета
   - name: Install mongodb package
     apt:
       name: mongodb-org
       state: present
+    tags: install
 
   # Включаем сервис
   - name: Configure service supervisor
     systemd:
       name: mongod
       enabled: yes
-      
+      state: started
+    tags: install
