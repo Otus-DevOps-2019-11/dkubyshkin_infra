@@ -132,3 +132,9 @@ Ansible-3
 
 Научились работать с ролями.
 Использовади кастомную роль nginx.
+
+Ansible-4
+
+packer не знает где лежит папка с ролями, нужно явно задать путь через соответствующую переменную окружения: "ansible_env_vars": ["ANSIBLE_ROLES_PATH={{ pwd }}/ansible/roles"]
+
+Необходимо воспользоваться тэгом "ruby". Передаем через "extra_argunents": "extra_arguments": ["--tags", "ruby"]
